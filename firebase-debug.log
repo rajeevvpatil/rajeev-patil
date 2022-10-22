@@ -1,0 +1,17 @@
+[debug] [2022-10-22T22:44:00.431Z] ----------------------------------------------------------------------
+[debug] [2022-10-22T22:44:00.433Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\rajee\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2022-10-22T22:44:00.434Z] CLI Version:   11.14.1
+[debug] [2022-10-22T22:44:00.435Z] Platform:      win32
+[debug] [2022-10-22T22:44:00.435Z] Node Version:  v16.6.2
+[debug] [2022-10-22T22:44:00.436Z] Time:          Sat Oct 22 2022 15:44:00 GMT-0700 (Pacific Daylight Time)
+[debug] [2022-10-22T22:44:00.436Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-10-22T22:44:00.523Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-10-22T22:44:00.523Z] > authorizing via signed-in user (rajeevvpatil899@gmail.com)
+[debug] [2022-10-22T22:44:00.523Z] [iam] checking project rajeev-patil for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-10-22T22:44:00.527Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/rajeev-patil:testIamPermissions [none]
+[debug] [2022-10-22T22:44:00.528Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/rajeev-patil:testIamPermissions x-goog-quota-user=projects/rajeev-patil
+[debug] [2022-10-22T22:44:00.528Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/rajeev-patil:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-10-22T22:44:00.843Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/rajeev-patil:testIamPermissions 200
+[debug] [2022-10-22T22:44:00.844Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/rajeev-patil:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-10-22T22:44:00.844Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/rajeev-patil [none]
