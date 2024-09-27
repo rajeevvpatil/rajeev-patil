@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "rajeevPatil:build:production"
+              "buildTarget": "rajeevPatil:build:production"
             },
             "development": {
-              "browserTarget": "rajeevPatil:build:development"
+              "buildTarget": "rajeevPatil:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "rajeevPatil:build"
+            "buildTarget": "rajeevPatil:build"
           }
         },
         "test": {
