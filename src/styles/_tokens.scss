@@ -1,0 +1,76 @@
+// ============================================================
+// _tokens.scss — Single source of truth for all design tokens
+// Import with: @use 'tokens' as t;
+// ============================================================
+
+// ----- ENGINEER PALETTE (Pacific Blue) -----
+$eng-bg-primary: #080e1c;
+$eng-bg-secondary: #0d1525;
+$eng-bg-surface: #131e30;
+$eng-bg-card: #192638;
+$eng-text-primary: #e8edf8;
+$eng-text-secondary: #97aac5;
+$eng-text-muted: #56697f;
+$eng-accent: #4a90a4;
+$eng-accent-deep: #2E4755;
+$eng-accent-hover: #62aabe;
+
+$eng-bg-primary-light: #f4f7fa;
+$eng-bg-secondary-light: #e8eef6;
+$eng-bg-surface-light: #dce5f0;
+$eng-bg-card-light: #ffffff;
+$eng-text-primary-light: #0d1a2a;
+$eng-text-secondary-light: #2d4a6a;
+$eng-text-muted-light: #7090aa;
+$eng-accent-light: #2E4755;
+
+// ----- PHOTOGRAPHY PALETTE (Warm Amber) -----
+$photo-bg-primary: #faf8f5;
+$photo-bg-secondary: #f2ede6;
+$photo-bg-surface: #ede6da;
+$photo-bg-card: #ffffff;
+$photo-text-primary: #1a1614;
+$photo-text-secondary: #4a3f35;
+$photo-text-muted: #8a7d70;
+$photo-accent: #b8944a;
+$photo-accent-hover: #c9a85c;
+
+$photo-bg-primary-dark: #100e0c;
+$photo-bg-secondary-dark: #1a1613;
+$photo-bg-surface-dark: #241f1a;
+$photo-bg-card-dark: #2e2720;
+$photo-text-primary-dark: #f0ebe3;
+$photo-text-secondary-dark: #c4b49e;
+$photo-text-muted-dark: #7a6d5e;
+$photo-accent-dark: #c9a85c;
+$photo-accent-hover-dark: #dbbf74;
+
+// ----- FONTS -----
+$font-eng-body: 'Inter', sans-serif;
+$font-eng-mono: 'JetBrains Mono', monospace;
+$font-photo-body: 'DM Sans', sans-serif;
+$font-photo-display: 'Cormorant Garamond', serif;
+
+// ----- SHARED SPACING -----
+$space-xs: 0.5rem;
+$space-sm: 1rem;
+$space-md: 1.5rem;
+$space-lg: 2.5rem;
+$space-xl: 4rem;
+$space-2xl: 6rem;
+
+// ----- RADII -----
+$radius-sm: 8px;
+$radius-md: 16px;
+$radius-lg: 24px;
+$radius-full: 9999px;
+
+// ----- TRANSITIONS -----
+$ease-fast: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+$ease-med: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+$ease-slow: 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+
+// ----- SHADOWS -----
+$shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 8px 32px rgba(0, 0, 0, 0.14);
+$shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.22);

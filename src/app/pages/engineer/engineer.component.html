@@ -1,0 +1,364 @@
+<div class="engineer-world" [class.light-mode]="isLightMode()">
+
+    <!-- Section dot nav -->
+    <nav class="section-dots" aria-label="Section navigation">
+        <button *ngFor="let s of ['hero','about','skills','experience','projects','contact']" class="dot-btn"
+            [class.active]="activeSection() === s" (click)="scrollTo(s)" [title]="s">
+            <span class="dot-label">{{s}}</span>
+        </button>
+    </nav>
+
+    <!-- ======== NAV ======== -->
+    <nav class="eng-nav" [class.scrolled]="isScrolled()">
+        <button class="nav-logo" routerLink="/" title="Return to Landing Page"
+            aria-label="Go to Home / Landing Page">RP<span class="accent-dot">.</span></button>
+
+        <ul class="nav-links" [class.open]="navOpen()">
+            <li *ngFor="let item of ['about','skills','experience','projects','contact']">
+                <a [class.active]="activeSection() === item" (click)="scrollTo(item)">{{item}}</a>
+            </li>
+        </ul>
+
+        <div class="nav-actions">
+            <!-- Social Icons -->
+            <div class="nav-socials">
+                <a href="https://linkedin.com/in/rajeevvpatil" target="_blank" rel="noopener noreferrer"
+                    title="LinkedIn" aria-label="LinkedIn Profile">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/rajeevvpatil" target="_blank" rel="noopener noreferrer" title="GitHub"
+                    aria-label="GitHub Profile">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+
+            <button class="theme-toggle" (click)="themeService.toggleEngineerTheme()"
+                [title]="isLightMode() ? 'Switch to Dark Mode' : 'Switch to Light Mode'"
+                [attr.aria-label]="isLightMode() ? 'Switch to Dark Mode' : 'Switch to Light Mode'">
+                <i class="fas" [class.fa-sun]="!isLightMode()" [class.fa-moon]="isLightMode()"></i>
+            </button>
+            <button class="world-switch" (click)="switchWorld()">
+                <i class="fas fa-camera"></i>
+                <span>Photography</span>
+            </button>
+            <button class="hamburger" (click)="navOpen.set(!navOpen())">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ======== HERO ======== -->
+    <section id="hero" class="eng-hero">
+        <div class="hero-grid-bg"></div>
+        <div class="hero-glow"></div>
+
+        <div class="hero-content">
+            <p class="hero-greeting reveal"><span class="mono">&gt;_ </span>Hello, I'm</p>
+            <h1 class="hero-name reveal delay-1">Rajeev<br><span class="accent-text">Patil</span></h1>
+            <div class="hero-title reveal delay-2">
+                <span class="title-chip">Senior Software Engineer</span>
+                <span class="divider-dot">·</span>
+                <span class="title-chip">Full-Stack</span>
+            </div>
+            <p class="hero-desc reveal delay-3">
+                I architect things that scale, obsess over performance,<br>
+                and care deeply about the humans who use what I build.
+            </p>
+            <div class="hero-ctas reveal delay-4">
+                <button class="btn-primary" (click)="scrollTo('projects')">View My Work</button>
+                <button class="btn-secondary" (click)="scrollTo('contact')">Get In Touch</button>
+            </div>
+        </div>
+
+        <div class="hero-visual reveal-right delay-2">
+            <div class="code-window">
+                <div class="window-bar">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                    <span class="file-name">rajeev.ts</span>
+                </div>
+                <div class="code-body">
+                    <div class="code-line"><span class="kw">const</span> <span class="fn">rajeev</span> = &#123;</div>
+                    <div class="code-line"> <span class="prop">role</span>: <span class="str">'Senior SWE'</span>,</div>
+                    <div class="code-line"> <span class="prop">experience</span>: <span class="num">6</span>,</div>
+                    <div class="code-line"> <span class="prop">stack</span>: [</div>
+                    <div class="code-line"> <span class="str">'Angular'</span>, <span class="str">'Python'</span>,</div>
+                    <div class="code-line"> <span class="str">'Django'</span>, <span class="str">'NgRx'</span>,</div>
+                    <div class="code-line"> ],</div>
+                    <div class="code-line"> <span class="prop">passionate</span>: <span class="kw">true</span>,</div>
+                    <div class="code-line">&#125;;</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-hint" (click)="scrollTo('about')">
+            <span>scroll</span>
+            <div class="scroll-line">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== ABOUT ======== -->
+    <section id="about" class="eng-about">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <span class="section-tag mono">01 / about</span>
+                <h2 class="section-title">About Me</h2>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-text reveal-left">
+                    <p>I'm a full-stack engineer with <strong>6+ years</strong> building high-impact software in the
+                        healthcare space. I spend most of my time on the frontend — crafting complex, data-heavy
+                        interfaces that both perform and feel intuitive.</p>
+                    <p>I take ownership seriously. Give me a problem and I'll drive it from whiteboard to production,
+                        caring about the architecture, the edge cases, and the user experience in equal measure.</p>
+                    <p>When I'm not at a keyboard, I'm chasing the perfect shot — a canyon at golden hour, the Milky Way
+                        over a ridgeline, or a fleeting moment on a city street.</p>
+                </div>
+
+                <div class="about-stats reveal-right">
+                    <div class="stat-card">
+                        <span class="stat-number">6+</span>
+                        <span class="stat-label">Years of Experience</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">70%</span>
+                        <span class="stat-label">Frontend Focus</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">4</span>
+                        <span class="stat-label">New Customers Driven</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">40%</span>
+                        <span class="stat-label">Retention Boost</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== SKILLS ======== -->
+    <section id="skills" class="eng-skills">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <span class="section-tag mono">02 / skills</span>
+                <h2 class="section-title">Technical Skills</h2>
+            </div>
+
+            <div class="skills-grid">
+                <!-- Frontend -->
+                <div class="skill-category reveal">
+                    <h3 class="cat-title"><i class="fas fa-code"></i> Frontend</h3>
+                    <div class="skill-pills">
+                        <span class="skill-pill" [title]="s.tip"
+                            *ngFor="let s of skills.frontend; trackBy: trackByName">{{s.name}}</span>
+                    </div>
+                </div>
+
+                <!-- Backend -->
+                <div class="skill-category reveal delay-1">
+                    <h3 class="cat-title"><i class="fas fa-server"></i> Backend</h3>
+                    <div class="skill-pills">
+                        <span class="skill-pill" [title]="s.tip"
+                            *ngFor="let s of skills.backend; trackBy: trackByName">{{s.name}}</span>
+                    </div>
+                </div>
+
+                <!-- Tools -->
+                <div class="skill-category reveal delay-2">
+                    <h3 class="cat-title"><i class="fas fa-tools"></i> Tools & Infra</h3>
+                    <div class="skill-pills">
+                        <span class="skill-pill" [title]="s.tip"
+                            *ngFor="let s of skills.tools; trackBy: trackByName">{{s.name}}</span>
+                    </div>
+                </div>
+
+                <!-- AI -->
+                <div class="skill-category reveal delay-3">
+                    <h3 class="cat-title"><i class="fas fa-robot"></i> Agentic AI</h3>
+                    <div class="skill-pills">
+                        <span class="skill-pill" [title]="s.tip"
+                            *ngFor="let s of skills.ai; trackBy: trackByName">{{s.name}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== EXPERIENCE ======== -->
+    <section id="experience" class="eng-experience">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <span class="section-tag mono">03 / experience</span>
+                <h2 class="section-title">Journey</h2>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item reveal" *ngFor="let exp of experience; let i = index" [class.delay-1]="i===1"
+                    [class.delay-2]="i===2" [class.delay-3]="i===3">
+                    <div class="timeline-node" [class.current]="exp.current">
+                        <div class="node-dot"></div>
+                        <div class="node-line" *ngIf="!exp.current"></div>
+                    </div>
+                    <div class="timeline-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="exp-role">{{exp.role}}</h3>
+                                <p class="exp-company">{{exp.company}}</p>
+                            </div>
+                            <div class="exp-meta">
+                                <span class="exp-period">{{exp.period}}</span>
+                                <span class="exp-duration">{{exp.duration}}</span>
+                                <span class="exp-location">{{exp.location}}</span>
+                            </div>
+                        </div>
+                        <ul class="exp-highlights">
+                            <li *ngFor="let h of exp.highlights">{{h}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="education-section">
+                <h3 class="edu-heading reveal"><i class="fas fa-graduation-cap"></i> Education</h3>
+                <div class="edu-grid">
+                    <div class="edu-card reveal" *ngFor="let edu of education; let i = index" [class.delay-1]="i===1">
+                        <div class="edu-icon">{{edu.logo}}</div>
+                        <div>
+                            <h4 class="edu-degree">{{edu.degree}}</h4>
+                            <p class="edu-school">{{edu.school}}</p>
+                            <p class="edu-concentration" *ngIf="edu.concentration">{{edu.concentration}}</p>
+                            <span class="edu-period">{{edu.period}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== PROJECTS ======== -->
+    <section id="projects" class="eng-projects">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <span class="section-tag mono">04 / projects</span>
+                <h2 class="section-title">Projects</h2>
+                <p class="section-subtitle reveal">Coming soon — curated highlights of my best work.</p>
+            </div>
+
+            <div class="projects-grid">
+                <div class="project-card reveal" *ngFor="let i of [1,2,3]" [class.delay-1]="i===2"
+                    [class.delay-2]="i===3">
+                    <div class="project-placeholder">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-name">Project {{i}}</h3>
+                        <p class="project-desc">Details coming soon.</p>
+                        <div class="project-tags">
+                            <span class="p-tag">Angular</span>
+                            <span class="p-tag">Python</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== CONTACT ======== -->
+    <section id="contact" class="eng-contact">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <span class="section-tag mono">05 / contact</span>
+                <h2 class="section-title">Let's Talk</h2>
+                <p class="section-subtitle reveal">Have an interesting project or opportunity? I'd love to hear from
+                    you.</p>
+            </div>
+
+            <div class="contact-layout">
+                <form class="contact-form reveal-left" [formGroup]="contactForm" (ngSubmit)="sendEmail()">
+                    <div class="form-group">
+                        <label class="form-label">Name</label>
+                        <input class="form-input" formControlName="name" placeholder="Your name" type="text"
+                            [class.error]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
+                        <span class="form-error"
+                            *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">Name is
+                            required</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input class="form-input" formControlName="email" placeholder="your@email.com" type="email"
+                            [class.error]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+                        <span class="form-error"
+                            *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">Valid email
+                            required</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-input form-textarea" formControlName="message"
+                            placeholder="What's on your mind?" rows="5"
+                            [class.error]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"></textarea>
+                        <span class="form-error"
+                            *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched">Message
+                            must be at least 10 characters</span>
+                    </div>
+
+                    <button type="submit" class="submit-btn" [disabled]="formStatus() === 'sending'">
+                        <span *ngIf="formStatus() !== 'sending'"><i class="fas fa-paper-plane"></i> Send Message</span>
+                        <span *ngIf="formStatus() === 'sending'"><i class="fas fa-spinner fa-spin"></i> Sending…</span>
+                    </button>
+
+                    <div class="form-feedback success" *ngIf="formStatus() === 'success'">
+                        <i class="fas fa-check-circle"></i> Message sent! I'll get back to you soon.
+                    </div>
+                    <div class="form-feedback error" *ngIf="formStatus() === 'error'">
+                        <i class="fas fa-exclamation-circle"></i> Something went wrong. Try emailing me directly.
+                    </div>
+                </form>
+
+                <div class="contact-links reveal-right">
+                    <h3 class="links-heading">Or reach me via</h3>
+                    <div class="social-links">
+                        <a href="mailto:rajeevvpatil899&#64;gmail.com" class="social-link" target="_blank"
+                            rel="noopener noreferrer">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <span class="link-label">Email</span>
+                                <span class="link-val">rajeevvpatil899&#64;gmail.com</span>
+                            </div>
+                        </a>
+                        <a href="https://linkedin.com/in/rajeevvpatil" class="social-link" target="_blank"
+                            rel="noopener noreferrer">
+                            <i class="fab fa-linkedin"></i>
+                            <div>
+                                <span class="link-label">LinkedIn</span>
+                                <span class="link-val">rajeevvpatil</span>
+                            </div>
+                        </a>
+                        <a href="https://github.com/rajeevvpatil" class="social-link" target="_blank"
+                            rel="noopener noreferrer">
+                            <i class="fab fa-github"></i>
+                            <div>
+                                <span class="link-label">GitHub</span>
+                                <span class="link-val">rajeevvpatil</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="eng-footer">
+        <p>Designed & built by <span class="accent-text">Rajeev Patil</span></p>
+        <button class="world-switch-footer" (click)="switchWorld()">
+            <i class="fas fa-camera"></i> Switch to Photography
+        </button>
+    </footer>
+
+</div>

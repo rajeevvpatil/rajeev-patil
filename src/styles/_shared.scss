@@ -1,0 +1,424 @@
+// ============================================================
+// _shared.scss — Reusable mixins for patterns shared between
+//               Engineer and Photography worlds
+// Import with: @use 'shared' as s;  then @include s.nav-base;
+// ============================================================
+
+// ----- Section dot nav (right-side) -----
+@mixin section-dots {
+    position: fixed;
+    right: 1.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
+@mixin dot-btn {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    opacity: 0.25;
+    transition: all var(--transition-fast);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .dot-label {
+        position: absolute;
+        right: calc(100% + 1rem);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent);
+        opacity: 0;
+        transform: translateX(10px);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        white-space: nowrap;
+        pointer-events: none;
+        background: var(--bg-surface);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+    }
+
+    &:hover {
+        opacity: 1;
+        transform: scale(1.4);
+
+        .dot-label {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    &.active {
+        opacity: 1;
+        transform: scale(1.3);
+        background: var(--accent);
+        box-shadow: 0 0 8px var(--accent-glow);
+
+        .dot-label {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+    }
+}
+
+// ----- Top nav bar -----
+@mixin top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    z-index: 100;
+    transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease;
+
+    &.scrolled {
+        background: var(--nav-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: 0 1px 0 var(--border);
+        padding: 0.9rem 3rem;
+    }
+}
+
+// ----- Nav links -----
+@mixin nav-links {
+    display: flex;
+    gap: 2.5rem;
+
+    li a {
+        font-size: 0.83rem;
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        color: var(--text-secondary);
+        cursor: pointer;
+        position: relative;
+        transition: color var(--transition-fast);
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width var(--transition-fast);
+        }
+
+        &:hover,
+        &.active {
+            color: var(--accent);
+
+            &::after {
+                width: 100%;
+            }
+        }
+    }
+}
+
+// ----- Nav actions container -----
+@mixin nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-socials {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+    margin-right: 0.5rem;
+
+    a {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        transition: all var(--transition-fast);
+        display: flex;
+        align-items: center;
+
+        &:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+    }
+
+    @media (max-width: 900px) {
+        display: none; // Keep header clean on small tablets/mobile
+    }
+}
+
+// ----- Icon button (theme toggle etc.) -----
+@mixin icon-btn($size: 36px) {
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    background: var(--bg-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.88rem;
+    transition: all var(--transition-fast);
+
+    &:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+        background: var(--accent-glow);
+    }
+}
+
+// ----- Pill button (world-switch etc.) -----
+@mixin pill-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+
+    &:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: var(--accent-glow);
+    }
+}
+
+// ----- Hamburger menu -----
+@mixin hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    width: 30px;
+    padding: 4px;
+
+    span {
+        display: block;
+        height: 2px;
+        background: var(--text-secondary);
+        border-radius: 2px;
+        transition: all var(--transition-fast);
+    }
+}
+
+// ----- Form inputs -----
+@mixin form-input {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all var(--transition-fast);
+    width: 100%;
+    outline: none;
+
+    &::placeholder {
+        color: var(--text-muted);
+    }
+
+    &:focus {
+        border-color: var(--accent);
+        background: var(--bg-card);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    &.error {
+        border-color: #f97171;
+    }
+}
+
+// ----- Submit button -----
+@mixin submit-btn {
+    padding: 0.9rem 2rem;
+    background: var(--accent);
+    color: #fff;
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    align-self: flex-start;
+    transition: all var(--transition-fast);
+    border: 1px solid transparent;
+
+    &:hover:not(:disabled) {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px var(--accent-glow);
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+}
+
+// ----- Form feedback -----
+@mixin form-feedback {
+    font-size: 0.85rem;
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: var(--radius-sm);
+
+    &.success {
+        color: #28a745;
+        background: rgba(40, 167, 69, 0.08);
+    }
+
+    &.error {
+        color: #d9534f;
+        background: rgba(217, 83, 79, 0.08);
+    }
+}
+
+// ----- Social link item -----
+@mixin social-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+
+    &:hover {
+        border-color: var(--accent);
+        background: var(--accent-glow);
+        transform: translateX(4px);
+    }
+
+    i {
+        font-size: 1.2rem;
+        color: var(--accent);
+        width: 24px;
+        text-align: center;
+    }
+
+    .link-label {
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: var(--text-muted);
+        margin-bottom: 0.1rem;
+    }
+
+    .link-val {
+        display: block;
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+    }
+}
+
+// ----- Section header -----
+@mixin section-header {
+    margin-bottom: 3rem;
+
+    .section-tag {
+        font-size: 0.72rem;
+        letter-spacing: 0.15em;
+        color: var(--accent);
+        display: block;
+        margin-bottom: 0.65rem;
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+    }
+
+    .section-subtitle {
+        color: var(--text-secondary);
+        margin-top: 0.65rem;
+        font-size: 1rem;
+    }
+}
+
+// ----- Section container -----
+@mixin section-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4.5rem 3rem;
+}
+
+// ----- Scroll hint (animated line) -----
+@mixin scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity var(--transition-fast);
+    z-index: 2;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+// ----- Info/stat card -----
+@mixin info-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition-fast), transform var(--transition-fast);
+
+    &:hover {
+        border-color: var(--border-hover);
+        transform: translateY(-2px);
+    }
+}
+
+// ----- Timeline card -----
+@mixin timeline-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    flex: 1;
+    transition: border-color var(--transition-fast), transform var(--transition-fast);
+
+    &:hover {
+        border-color: var(--border-hover);
+        transform: translateX(4px);
+    }
+}

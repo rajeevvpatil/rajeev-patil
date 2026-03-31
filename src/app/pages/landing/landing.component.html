@@ -1,0 +1,46 @@
+<div class="landing" [class.animate-in]="animateIn()">
+
+    <!-- Left — Engineer -->
+    <div class="panel engineer-panel" [class.expanded]="hoveredSide() === 'engineer'"
+        [class.dimmed]="hoveredSide() === 'photography'" (mouseenter)="hoveredSide.set('engineer')"
+        (mouseleave)="hoveredSide.set(null)" (click)="navigate('engineer')" (keydown.enter)="navigate('engineer')"
+        role="link" tabindex="0" aria-label="Enter Engineering portfolio">
+
+        <div class="panel-bg engineer-bg"></div>
+
+        <div class="panel-footer">
+            <span class="role-label">
+                <span class="role-dot"></span>
+                Engineer
+            </span>
+            <span class="enter-hint">Enter &nbsp;<i class="fas fa-arrow-right"></i></span>
+        </div>
+    </div>
+
+    <!-- Center Name — fixed -->
+    <div class="center-name">
+        <h1 class="name-first">Rajeev</h1>
+        <h1 class="name-last">Patil</h1>
+    </div>
+
+    <!-- Vertical split line -->
+    <div class="center-divider"></div>
+
+    <!-- Right — Photography -->
+    <div class="panel photography-panel" [class.expanded]="hoveredSide() === 'photography'"
+        [class.dimmed]="hoveredSide() === 'engineer'" (mouseenter)="hoveredSide.set('photography')"
+        (mouseleave)="hoveredSide.set(null)" (click)="navigate('photography')" (keydown.enter)="navigate('photography')"
+        role="link" tabindex="0" aria-label="Enter Photography portfolio">
+
+        <div class="panel-bg photography-bg"></div>
+
+        <div class="panel-footer">
+            <span class="role-label">
+                <span class="role-dot"></span>
+                Photography
+            </span>
+            <span class="enter-hint">Enter &nbsp;<i class="fas fa-arrow-right"></i></span>
+        </div>
+    </div>
+
+</div>
