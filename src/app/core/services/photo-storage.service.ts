@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
 
+export interface Photo {
+    id: string | number;
+    src: string;
+    alt: string;
+    genre: string;
+    span?: 'wide' | 'tall' | 'normal';
+    isUploaded?: boolean;
+}
+
 export interface StoredPhoto {
     id: string;
     genre: string;

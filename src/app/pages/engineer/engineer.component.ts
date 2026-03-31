@@ -3,8 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ThemeService } from '../../core/services/theme.service';
-import emailjs from '@emailjs/browser';
-import { EMAILJS_CONFIG } from '../../core/config/emailjs.config';
+import { EmailService } from '../../core/services/email.service';
+
+const SCROLL_REVEAL_DELAY_MS = 100;
+const SCROLL_REVEAL_THRESHOLD = 0.1;
 
 @Component({
     selector: 'app-engineer',
@@ -126,7 +128,8 @@ export class EngineerComponent implements OnInit, OnDestroy {
         private router: Router,
         public themeService: ThemeService,
         private fb: FormBuilder,
-        private el: ElementRef
+        private el: ElementRef,
+        private emailService: EmailService
     ) { }
 
     ngOnInit(): void {
@@ -136,8 +139,7 @@ export class EngineerComponent implements OnInit, OnDestroy {
             email: ['', [Validators.required, Validators.email]],
             message: ['', [Validators.required, Validators.minLength(10)]]
         });
-        emailjs.init(EMAILJS_CONFIG.publicKey);
-        setTimeout(() => this.setupScrollReveal(), 100);
+        setTimeout(() => this.setupScrollReveal(), SCROLL_REVEAL_DELAY_MS);
     }
 
     ngOnDestroy(): void {
@@ -177,7 +179,7 @@ export class EngineerComponent implements OnInit, OnDestroy {
         const elements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
         this.observer = new IntersectionObserver(
             entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-            { threshold: 0.12 }
+            { threshold: SCROLL_REVEAL_THRESHOLD }
         );
         elements.forEach(el => this.observer.observe(el));
     }
@@ -186,11 +188,10 @@ export class EngineerComponent implements OnInit, OnDestroy {
         if (this.contactForm.invalid) { this.contactForm.markAllAsTouched(); return; }
         this.formStatus.set('sending');
         try {
-            await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+            await this.emailService.send({
                 from_name: this.contactForm.value.name,
                 from_email: this.contactForm.value.email,
-                message: this.contactForm.value.message,
-                to_email: 'rajeevvpatil899@gmail.com'
+                message: this.contactForm.value.message
             });
             this.formStatus.set('success');
             this.contactForm.reset();

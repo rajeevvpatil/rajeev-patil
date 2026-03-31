@@ -139,8 +139,7 @@ export class AdminComponent implements OnInit {
                 ];
 
                 setTimeout(() => delete this.uploadProgress[id], 1500);
-            } catch (err) {
-                console.error('Upload failed for', file.name, err);
+            } catch {
                 delete this.uploadProgress[id];
             }
         }

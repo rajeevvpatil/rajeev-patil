@@ -3,18 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ThemeService } from '../../core/services/theme.service';
-import { PhotoStorageService, StoredPhoto } from '../../core/services/photo-storage.service';
-import emailjs from '@emailjs/browser';
-import { EMAILJS_CONFIG } from '../../core/config/emailjs.config';
+import { PhotoStorageService, StoredPhoto, Photo } from '../../core/services/photo-storage.service';
+import { EmailService } from '../../core/services/email.service';
 
-export interface Photo {
-    id: string | number;
-    src: string;
-    alt: string;
-    genre: string;
-    span?: 'wide' | 'tall' | 'normal';
-    isUploaded?: boolean;
-}
+const SCROLL_REVEAL_DELAY_MS = 100;
+const SCROLL_REVEAL_THRESHOLD = 0.1;
 
 @Component({
     selector: 'app-photography',
@@ -31,6 +24,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     activeGenre = signal('landscape');
     lightboxOpen = signal(false);
     lightboxPhoto = signal<Photo | null>(null);
+    lightboxIndex = signal(0);
     formStatus = signal<'idle' | 'sending' | 'success' | 'error'>('idle');
 
     isScrolled = computed(() => this.activeSection() !== 'hero');
@@ -51,7 +45,8 @@ export class PhotographyComponent implements OnInit, OnDestroy {
         public themeService: ThemeService,
         private fb: FormBuilder,
         private photoStorage: PhotoStorageService,
-        private el: ElementRef
+        private el: ElementRef,
+        private emailService: EmailService
     ) { }
 
     ngOnInit(): void {
@@ -62,9 +57,8 @@ export class PhotographyComponent implements OnInit, OnDestroy {
             subject: [''],
             message: ['', [Validators.required, Validators.minLength(10)]]
         });
-        emailjs.init(EMAILJS_CONFIG.publicKey);
         this.loadUploadedPhotos();
-        setTimeout(() => this.setupScrollReveal(), 100);
+        setTimeout(() => this.setupScrollReveal(), SCROLL_REVEAL_DELAY_MS);
     }
 
     ngOnDestroy(): void {
@@ -72,11 +66,15 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     }
 
     async loadUploadedPhotos() {
-        for (const genre of this.genres) {
-            const stored: StoredPhoto[] = await this.photoStorage.getPhotosByGenre(genre);
-            this.uploadedPhotosByGenre[genre] = stored
-                .sort((a, b) => a.uploadedAt - b.uploadedAt)
-                .map(s => ({ id: s.id, src: s.dataUrl, alt: s.alt, genre: s.genre, span: s.span, isUploaded: true }));
+        try {
+            for (const genre of this.genres) {
+                const stored: StoredPhoto[] = await this.photoStorage.getPhotosByGenre(genre);
+                this.uploadedPhotosByGenre[genre] = stored
+                    .sort((a, b) => a.uploadedAt - b.uploadedAt)
+                    .map(s => ({ id: s.id, src: s.dataUrl, alt: s.alt, genre: s.genre, span: s.span, isUploaded: true }));
+            }
+        } catch {
+            // IndexedDB unavailable — gallery will remain empty
         }
     }
 
@@ -90,8 +88,6 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     }
 
     setGenre(genre: string) { this.activeGenre.set(genre); }
-
-    lightboxIndex = signal(0);
 
     openLightbox(photo: Photo) {
         const idx = this.filteredPhotos.indexOf(photo);
@@ -156,7 +152,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
         const elements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
         this.observer = new IntersectionObserver(
             entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-            { threshold: 0.1 }
+            { threshold: SCROLL_REVEAL_THRESHOLD }
         );
         elements.forEach(el => this.observer.observe(el));
     }
@@ -175,12 +171,11 @@ export class PhotographyComponent implements OnInit, OnDestroy {
         if (this.contactForm.invalid) { this.contactForm.markAllAsTouched(); return; }
         this.formStatus.set('sending');
         try {
-            await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+            await this.emailService.send({
                 from_name: this.contactForm.value.name,
                 from_email: this.contactForm.value.email,
                 subject: this.contactForm.value.subject || 'Photography Inquiry',
-                message: this.contactForm.value.message,
-                to_email: 'rajeevvpatil899@gmail.com'
+                message: this.contactForm.value.message
             });
             this.formStatus.set('success');
             this.contactForm.reset();
