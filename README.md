@@ -1,27 +1,98 @@
-# RajeevPatil
+# Rajeev Patil — Personal Portfolio
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.1.
+Personal portfolio website built with Angular 18. Features a split landing page leading to two distinct worlds: an **Engineering** portfolio and a **Photography** portfolio.
 
-## Development server
+**Live site:** [rajeevpatil.com](https://rajeevpatil.com) <!-- update if different -->
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## Overview
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+| Section | Description |
+|---|---|
+| Landing | Split-panel entry — choose Engineer or Photography |
+| Engineer | Full-page portfolio: skills, experience, projects, contact form |
+| Photography | Photo gallery and visual work |
 
-## Build
+### Engineer Portfolio Highlights
+- Skills across Frontend, Backend, Tools, and AI
+- Full work history (LeanTaaS, Micron Technology, etc.)
+- Education: M.S. SJSU, B.E. Pune University
+- Contact form powered by [EmailJS](https://www.emailjs.com/)
+- Light/dark theme toggle
+- Scroll-reveal animations, parallax hero, section nav dots
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+---
 
-## Running unit tests
+## Tech Stack
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **Framework:** Angular 18 (standalone components, Signals)
+- **State:** Angular Signals + NgRx patterns
+- **Styling:** SCSS, CSS Grid, Flexbox
+- **Email:** @emailjs/browser
+- **Hosting:** Firebase Hosting
+- **Language:** TypeScript 5.4
 
-## Running end-to-end tests
+---
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Getting Started
 
-## Further help
+### Prerequisites
+- Node.js 20+
+- Angular CLI 18
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+npm install -g @angular/cli
+```
+
+### Install & Run
+
+```bash
+npm install
+ng serve
+```
+
+Navigate to `http://localhost:4200/`.
+
+### Build
+
+```bash
+ng build
+```
+
+Output goes to `dist/rajeev-patil/`.
+
+### Deploy (Firebase)
+
+```bash
+ng build
+firebase deploy
+```
+
+---
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── core/
+│   │   └── services/         # ThemeService, EmailService
+│   ├── pages/
+│   │   ├── landing/          # Split-panel entry page
+│   │   ├── engineer/         # Engineering portfolio
+│   │   └── photography/      # Photography portfolio
+│   └── app.component.*
+└── styles.scss               # Global styles
+```
+
+---
+
+## Scripts
+
+| Command | Description |
+|---|---|
+| `ng serve` | Start dev server at localhost:4200 |
+| `ng build` | Production build |
+| `ng build --watch` | Watch mode build |
+| `ng test` | Run unit tests via Karma |

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ElementRef, signal, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef, ViewChild, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -29,8 +29,13 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
     isScrolled = computed(() => this.activeSection() !== 'hero');
 
+    @ViewChild('lightboxClose') lightboxCloseBtn!: ElementRef<HTMLButtonElement>;
+
     contactForm!: FormGroup;
     private observer!: IntersectionObserver;
+    private lastFocusedElement: HTMLElement | null = null;
+    private rafId: number | null = null;
+    private touchStartX = 0;
 
     genres = ['landscape', 'astro', 'street', 'portraits'];
     uploadedPhotosByGenre: { [genre: string]: Photo[] } = {};
@@ -63,6 +68,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         if (this.observer) this.observer.disconnect();
+        if (this.rafId !== null) cancelAnimationFrame(this.rafId);
     }
 
     async loadUploadedPhotos() {
@@ -90,17 +96,20 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     setGenre(genre: string) { this.activeGenre.set(genre); }
 
     openLightbox(photo: Photo) {
+        this.lastFocusedElement = document.activeElement as HTMLElement;
         const idx = this.filteredPhotos.indexOf(photo);
         this.lightboxIndex.set(idx >= 0 ? idx : 0);
         this.lightboxPhoto.set(photo);
         this.lightboxOpen.set(true);
         document.body.style.overflow = 'hidden';
+        setTimeout(() => this.lightboxCloseBtn?.nativeElement.focus(), 0);
     }
 
     closeLightbox() {
         this.lightboxOpen.set(false);
         this.lightboxPhoto.set(null);
         document.body.style.overflow = '';
+        setTimeout(() => this.lastFocusedElement?.focus(), 0);
     }
 
     nextPhoto() {
@@ -128,6 +137,23 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     @HostListener('document:keydown.arrowLeft')
     onLeftKey() { if (this.lightboxOpen()) this.prevPhoto(); }
 
+    @HostListener('document:keydown', ['$event'])
+    onKeydown(e: KeyboardEvent) {
+        if (!this.lightboxOpen() || e.key !== 'Tab') return;
+        const lightbox = this.el.nativeElement.querySelector('.lightbox');
+        const focusable = Array.from(
+            lightbox.querySelectorAll('button:not([disabled])')
+        ) as HTMLElement[];
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+            if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+            if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+    }
+
     onContainerScroll() {
         const scrollY = window.scrollY;
 
@@ -146,7 +172,27 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     }
 
     @HostListener('window:scroll')
-    onScroll() { this.onContainerScroll(); }
+    onScroll() {
+        if (this.rafId !== null) return;
+        this.rafId = requestAnimationFrame(() => {
+            this.onContainerScroll();
+            this.rafId = null;
+        });
+    }
+
+    @HostListener('document:touchstart', ['$event'])
+    onTouchStart(e: TouchEvent) {
+        if (!this.lightboxOpen()) return;
+        this.touchStartX = e.changedTouches[0].clientX;
+    }
+
+    @HostListener('document:touchend', ['$event'])
+    onTouchEnd(e: TouchEvent) {
+        if (!this.lightboxOpen()) return;
+        const diff = this.touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) < 50) return;
+        if (diff > 0) this.nextPhoto(); else this.prevPhoto();
+    }
 
     setupScrollReveal() {
         const elements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
@@ -168,7 +214,12 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     }
 
     async sendEmail() {
-        if (this.contactForm.invalid) { this.contactForm.markAllAsTouched(); return; }
+        if (this.contactForm.invalid) {
+            this.contactForm.markAllAsTouched();
+            const firstInvalid = this.el.nativeElement.querySelector('input.ng-invalid, textarea.ng-invalid');
+            if (firstInvalid) (firstInvalid as HTMLElement).focus();
+            return;
+        }
         this.formStatus.set('sending');
         try {
             await this.emailService.send({
@@ -179,8 +230,10 @@ export class PhotographyComponent implements OnInit, OnDestroy {
             });
             this.formStatus.set('success');
             this.contactForm.reset();
+            setTimeout(() => this.formStatus.set('idle'), 5000);
         } catch {
             this.formStatus.set('error');
+            setTimeout(() => this.formStatus.set('idle'), 5000);
         }
     }
 

@@ -1,10 +1,10 @@
-<div class="landing" [class.animate-in]="animateIn()">
+<div class="landing" [class.animate-in]="animateIn()" id="main-content" tabindex="-1">
 
     <!-- Left — Engineer -->
-    <div class="panel engineer-panel" [class.expanded]="hoveredSide() === 'engineer'"
+    <button class="panel engineer-panel" [class.expanded]="hoveredSide() === 'engineer'"
         [class.dimmed]="hoveredSide() === 'photography'" (mouseenter)="hoveredSide.set('engineer')"
-        (mouseleave)="hoveredSide.set(null)" (click)="navigate('engineer')" (keydown.enter)="navigate('engineer')"
-        role="link" tabindex="0" aria-label="Enter Engineering portfolio">
+        (mouseleave)="hoveredSide.set(null)" (click)="navigate('engineer')"
+        aria-label="Enter Engineering portfolio">
 
         <div class="panel-bg engineer-bg"></div>
 
@@ -15,22 +15,22 @@
             </span>
             <span class="enter-hint">Enter &nbsp;<i class="fas fa-arrow-right"></i></span>
         </div>
-    </div>
+    </button>
 
     <!-- Center Name — fixed -->
-    <div class="center-name">
-        <h1 class="name-first">Rajeev</h1>
-        <h1 class="name-last">Patil</h1>
+    <div class="center-name" aria-hidden="true">
+        <span class="name-first">Rajeev</span>
+        <span class="name-last">Patil</span>
     </div>
 
     <!-- Vertical split line -->
-    <div class="center-divider"></div>
+    <div class="center-divider" aria-hidden="true"></div>
 
     <!-- Right — Photography -->
-    <div class="panel photography-panel" [class.expanded]="hoveredSide() === 'photography'"
+    <button class="panel photography-panel" [class.expanded]="hoveredSide() === 'photography'"
         [class.dimmed]="hoveredSide() === 'engineer'" (mouseenter)="hoveredSide.set('photography')"
-        (mouseleave)="hoveredSide.set(null)" (click)="navigate('photography')" (keydown.enter)="navigate('photography')"
-        role="link" tabindex="0" aria-label="Enter Photography portfolio">
+        (mouseleave)="hoveredSide.set(null)" (click)="navigate('photography')"
+        aria-label="Enter Photography portfolio">
 
         <div class="panel-bg photography-bg"></div>
 
@@ -41,6 +41,6 @@
             </span>
             <span class="enter-hint">Enter &nbsp;<i class="fas fa-arrow-right"></i></span>
         </div>
-    </div>
+    </button>
 
 </div>

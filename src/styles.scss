@@ -117,6 +117,45 @@
   color var(--transition-med);
 }
 
+/* ---------- FOCUS RING — keyboard accessibility ---------- */
+:root {
+  --focus-ring-color: #4a90a4;
+}
+
+.engineer-world  { --focus-ring-color: #4a90a4; }
+.photography-world { --focus-ring-color: #b8944a; }
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring-color);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---------- SKIP LINK ---------- */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 99999;
+  padding: 0.6rem 1.25rem;
+  background: #000;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 0 0 6px 6px;
+  transition: top 0.15s ease;
+
+  &:focus {
+    top: 0;
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+}
+
 /* ---------- RESET & BASE ---------- */
 *,
 *::before,

@@ -1,4 +1,4 @@
-<div class="engineer-world" [class.light-mode]="isLightMode()">
+<div class="engineer-world" [class.light-mode]="isLightMode()" id="main-content" tabindex="-1">
 
     <!-- Section dot nav -->
     <nav class="section-dots" aria-label="Section navigation">
@@ -22,7 +22,7 @@
         <div class="nav-actions">
             <!-- Social Icons -->
             <div class="nav-socials">
-                <a href="https://linkedin.com/in/rajeevvpatil" target="_blank" rel="noopener noreferrer"
+                <a href="https://linkedin.com/in/rajeevvpatil899" target="_blank" rel="noopener noreferrer"
                     title="LinkedIn" aria-label="LinkedIn Profile">
                     <i class="fab fa-linkedin"></i>
                 </a>
@@ -41,7 +41,8 @@
                 <i class="fas fa-camera"></i>
                 <span>Photography</span>
             </button>
-            <button class="hamburger" (click)="navOpen.set(!navOpen())">
+            <button class="hamburger" [class.open]="navOpen()" [attr.aria-expanded]="navOpen()"
+                aria-label="Toggle navigation menu" (click)="navOpen.set(!navOpen())">
                 <span></span><span></span><span></span>
             </button>
         </div>
@@ -296,10 +297,12 @@
                         <span *ngIf="formStatus() === 'sending'"><i class="fas fa-spinner fa-spin"></i> Sending…</span>
                     </button>
 
-                    <div class="form-feedback success" *ngIf="formStatus() === 'success'">
-                        <i class="fas fa-check-circle"></i> Message sent! I'll get back to you soon.
+                    <div class="form-feedback success" *ngIf="formStatus() === 'success'"
+                        role="alert" aria-live="assertive">
+                        <i class="fas fa-check-circle"></i> Message sent! I'll get back to you via email within 24–48 hours.
                     </div>
-                    <div class="form-feedback error" *ngIf="formStatus() === 'error'">
+                    <div class="form-feedback error" *ngIf="formStatus() === 'error'"
+                        role="alert" aria-live="assertive">
                         <i class="fas fa-exclamation-circle"></i> Something went wrong. Try emailing me directly.
                     </div>
                 </form>
@@ -315,7 +318,7 @@
                                 <span class="link-val">rajeevvpatil899&#64;gmail.com</span>
                             </div>
                         </a>
-                        <a href="https://linkedin.com/in/rajeevvpatil" class="social-link" target="_blank"
+                        <a href="https://linkedin.com/in/rajeevvpatil899" class="social-link" target="_blank"
                             rel="noopener noreferrer">
                             <i class="fab fa-linkedin"></i>
                             <div>

@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(xargs wc:*)",
-      "Bash(npx ng:*)"
+      "Bash(npx ng:*)",
+      "Bash(firebase --version)",
+      "Bash(firebase projects:list)",
+      "Bash(npx firebase:*)",
+      "Bash(npm list:*)",
+      "Bash(firebase deploy:*)",
+      "WebFetch(domain:www.linkedin.com)"
     ]
   }
 }

@@ -28,6 +28,7 @@ export class EngineerComponent implements OnInit, OnDestroy {
     contactForm!: FormGroup;
 
     private observer!: IntersectionObserver;
+    private rafId: number | null = null;
 
     skills = {
         frontend: [
@@ -144,6 +145,7 @@ export class EngineerComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         if (this.observer) this.observer.disconnect();
+        if (this.rafId !== null) cancelAnimationFrame(this.rafId);
     }
 
     toggleTheme() { this.themeService.toggleEngineerTheme(); }
@@ -156,7 +158,13 @@ export class EngineerComponent implements OnInit, OnDestroy {
     }
 
     @HostListener('window:scroll')
-    onScroll() { this.onContainerScroll(); }
+    onScroll() {
+        if (this.rafId !== null) return;
+        this.rafId = requestAnimationFrame(() => {
+            this.onContainerScroll();
+            this.rafId = null;
+        });
+    }
 
     onContainerScroll() {
         const scrollY = window.scrollY;
@@ -185,7 +193,12 @@ export class EngineerComponent implements OnInit, OnDestroy {
     }
 
     async sendEmail() {
-        if (this.contactForm.invalid) { this.contactForm.markAllAsTouched(); return; }
+        if (this.contactForm.invalid) {
+            this.contactForm.markAllAsTouched();
+            const firstInvalid = this.el.nativeElement.querySelector('.form-input.ng-invalid');
+            if (firstInvalid) (firstInvalid as HTMLElement).focus();
+            return;
+        }
         this.formStatus.set('sending');
         try {
             await this.emailService.send({
@@ -195,8 +208,10 @@ export class EngineerComponent implements OnInit, OnDestroy {
             });
             this.formStatus.set('success');
             this.contactForm.reset();
+            setTimeout(() => this.formStatus.set('idle'), 5000);
         } catch {
             this.formStatus.set('error');
+            setTimeout(() => this.formStatus.set('idle'), 5000);
         }
     }
 

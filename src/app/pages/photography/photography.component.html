@@ -1,4 +1,4 @@
-<div class="photography-world" [class.dark-mode]="isDarkMode()">
+<div class="photography-world" [class.dark-mode]="isDarkMode()" id="main-content" tabindex="-1">
 
     <!-- Section dot nav -->
     <nav class="section-dots" aria-label="Section navigation">
@@ -49,7 +49,8 @@
                 <i class="fas fa-code"></i>
                 <span>Engineering</span>
             </button>
-            <button class="hamburger" (click)="navOpen.set(!navOpen())">
+            <button class="hamburger" [class.open]="navOpen()" [attr.aria-expanded]="navOpen()"
+                aria-label="Toggle navigation menu" (click)="navOpen.set(!navOpen())">
                 <span></span><span></span><span></span>
             </button>
         </div>
@@ -121,7 +122,7 @@
                 <div class="photo-item" *ngFor="let photo of filteredPhotos; let i = index; trackBy: trackByPhotoId"
                     [class.wide]="photo.span === 'wide'" [class.tall]="photo.span === 'tall'"
                     (click)="openLightbox(photo)">
-                    <img [src]="photo.src" [alt]="photo.alt" (error)="handleImgError($event)">
+                    <img [src]="photo.src" [alt]="photo.alt || 'Photo by Rajeev Patil'" (error)="handleImgError($event)">
                     <div class="photo-overlay-hover">
                         <i class="fas fa-expand-alt"></i>
                         <span>{{photo.alt}}</span>
@@ -162,7 +163,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Subject</label>
+                        <label>Subject <span class="optional-label">(optional)</span></label>
                         <input formControlName="subject" placeholder="Print inquiry, collaboration, etc." type="text">
                     </div>
                     <div class="form-group">
@@ -176,10 +177,12 @@
                         <span *ngIf="formStatus() === 'sending'"><i class="fas fa-spinner fa-spin"></i> Sending…</span>
                     </button>
 
-                    <div class="form-feedback success" *ngIf="formStatus() === 'success'">
-                        <i class="fas fa-check-circle"></i> Message sent!
+                    <div class="form-feedback success" *ngIf="formStatus() === 'success'"
+                        role="alert" aria-live="assertive">
+                        <i class="fas fa-check-circle"></i> Message sent! I'll be in touch soon.
                     </div>
-                    <div class="form-feedback error" *ngIf="formStatus() === 'error'">
+                    <div class="form-feedback error" *ngIf="formStatus() === 'error'"
+                        role="alert" aria-live="assertive">
                         <i class="fas fa-exclamation-circle"></i> Something went wrong. Try reaching me socially.
                     </div>
                 </form>
@@ -222,21 +225,30 @@
     </footer>
 
     <!-- ======== LIGHTBOX ======== -->
-    <div class="lightbox" [class.open]="lightboxOpen()" (click)="closeLightbox()">
-        <button class="lightbox-nav lightbox-prev" (click)="$event.stopPropagation(); prevPhoto()" title="Previous">
+    <div class="lightbox" [class.open]="lightboxOpen()" (click)="closeLightbox()"
+        role="dialog" aria-modal="true" aria-label="Photo lightbox">
+
+        <button class="lightbox-nav lightbox-prev" (click)="$event.stopPropagation(); prevPhoto()"
+            aria-label="Previous photo">
             <i class="fas fa-chevron-left"></i>
         </button>
 
         <div class="lightbox-inner" (click)="$event.stopPropagation()">
-            <button class="lightbox-close" (click)="closeLightbox()"><i class="fas fa-times"></i></button>
+            <button #lightboxClose class="lightbox-close" (click)="closeLightbox()"
+                aria-label="Close photo">
+                <i class="fas fa-times"></i>
+            </button>
             <img *ngIf="lightboxPhoto()" [src]="lightboxPhoto()!.src" [alt]="lightboxPhoto()!.alt">
             <p class="lightbox-caption" *ngIf="lightboxPhoto()">
                 {{lightboxPhoto()!.alt}}
-                <span class="lightbox-counter">{{lightboxIndex() + 1}} / {{filteredPhotos.length}}</span>
+                <span class="lightbox-counter" aria-live="polite" aria-atomic="true">
+                    {{lightboxIndex() + 1}} / {{filteredPhotos.length}}
+                </span>
             </p>
         </div>
 
-        <button class="lightbox-nav lightbox-next" (click)="$event.stopPropagation(); nextPhoto()" title="Next">
+        <button class="lightbox-nav lightbox-next" (click)="$event.stopPropagation(); nextPhoto()"
+            aria-label="Next photo">
             <i class="fas fa-chevron-right"></i>
         </button>
     </div>
